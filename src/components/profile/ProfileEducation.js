@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import {
   CardSection,
@@ -26,12 +27,14 @@ const ProfileEducation = props => {
     educationHistory = profile.education;
   }
 
+  const { t } = useTranslation();
+
   return (
     <CardSection padding="0">
       <CardHeader margin="0" padding="24px 24px 0">
-        <CardHeaderText>Education</CardHeaderText>
+        <CardHeaderText>{t("education")}</CardHeaderText>
         <IconButton onClick={() => handleEdit()}>
-          <Icon className="fas fa-plus fa-2x" color="#0073b1"></Icon>
+          <Icon className="fas fa-plus fa-2x"></Icon>
         </IconButton>
       </CardHeader>
       {educationHistory && (
@@ -73,7 +76,7 @@ const ProfileEducation = props => {
                   </TextContainer>
                 </CardListItemContent>
                 <IconButton onClick={() => handleEdit(education.id)}>
-                  <Icon className="fas fa-pen fa-2x" color="#0073b1"></Icon>
+                  <Icon className="fas fa-pen fa-2x"></Icon>
                 </IconButton>
               </CardListItem>
             );

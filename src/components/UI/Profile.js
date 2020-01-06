@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const Card = styled.section`
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.2);
-  margin: 16px 0;
+  margin-bottom: ${props => (props.marginBottom ? props.marginBottom : "32px")};
   padding: 0 0 24px;
   position: relative;
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
 `;
 
 export const BackgroundImageContainer = styled.div`
@@ -43,12 +44,16 @@ export const ProfileImage = styled.img.attrs(props => ({
 `;
 
 export const CardSection = styled.section`
-  border-bottom: ${props => props.borderBottom};
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: ${props =>
+    props.theme.colors.cardSectionBorderBottomColor};
   margin: 0;
   padding: ${props => props.padding};
   &:last-child {
     border-bottom: none;
   }
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
 `;
 
 export const CardHeader = styled.header`
@@ -62,7 +67,7 @@ export const CardHeaderText = styled.h2`
   font-size: 2rem;
   line-height: 1.4;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.9);
+  color: ${props => props.theme.colors.cardHeaderTextColor};
   flex: 1;
   margin: 0;
   padding: 0;
@@ -81,8 +86,8 @@ export const FlexCardList = styled.ul`
   margin: 0;
   padding: 0;
   display: flex;
+  flex-flow: row;
   flex-wrap: wrap;
-  flex-flow: row wrap;
 `;
 
 export const CardListItem = styled.li`

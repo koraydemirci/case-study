@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import {
   CardSection,
@@ -26,22 +27,21 @@ const ProfileParticipation = props => {
     experienceHistory = profile.experience;
   }
 
+  const { t } = useTranslation();
+
   return (
-    <CardSection
-      borderBottom="1px solid rgba(0, 0, 0, 0.15)"
-      padding="0 0 24px"
-    >
+    <CardSection padding="0 0 24px">
       <CardHeader margin="0" padding="24px 24px 0">
-        <CardHeaderText>Experience</CardHeaderText>
+        <CardHeaderText>{t("experience")}</CardHeaderText>
         <IconButton onClick={() => handleEdit()}>
-          <Icon className="fas fa-plus fa-2x" color="#0073b1"></Icon>
+          <Icon className="fas fa-plus fa-2x"></Icon>
         </IconButton>
       </CardHeader>
       {experienceHistory && (
         <CardList>
           {experienceHistory.map(experience => {
             return (
-              <CardListItem>
+              <CardListItem key={experience.id}>
                 <CardListItemContent>
                   <Image src="https://via.placeholder.com/48" />
                   <TextContainer>
@@ -84,7 +84,7 @@ const ProfileParticipation = props => {
                   </TextContainer>
                 </CardListItemContent>
                 <IconButton onClick={() => handleEdit(experience.id)}>
-                  <Icon className="fas fa-pen fa-2x" color="#0073b1"></Icon>
+                  <Icon className="fas fa-pen fa-2x"></Icon>
                 </IconButton>
               </CardListItem>
             );

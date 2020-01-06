@@ -1,13 +1,18 @@
 import React, { useCallback, useReducer, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import { Text, FlexContainer1 } from "../../UI/Layout";
+import { Text, FlexContainer, Span } from "../../UI/Layout";
 import { Form, FormGroup, Label, Input, Button } from "../../UI/Form";
 import { formReducer, FORM_INPUT_UPDATE } from "../../../shared/utility";
 import { createIntro, updateIntro } from "../../../store/actions/profileIntro";
+import { showSpinner, closeSpinner } from "../../../store/actions/spinner";
 
 const validate = value => {
-  return value && value.length > 0;
+  if (value && value.length > 2) {
+    return true;
+  }
+  return false;
 };
 
 const IntroductionEditModal = props => {
@@ -18,6 +23,7 @@ const IntroductionEditModal = props => {
     intro = profile.intro;
   }
 
+  const [requiredField, setRequiredField] = useState(null);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       name: intro ? intro.name : "",
@@ -40,6 +46,7 @@ const IntroductionEditModal = props => {
 
   const handleInputChange = useCallback(
     event => {
+      setRequiredField(null);
       const value = event.target.value;
       const input = event.target.name;
       let isValid = validate(value);
@@ -66,9 +73,13 @@ const IntroductionEditModal = props => {
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
-      if (!formState.formIsValid) {
-        return;
+      for (let key in formState.inputValidities) {
+        if (!formState.inputValidities[key]) {
+          setRequiredField(key);
+          return;
+        }
       }
+      dispatch(showSpinner());
       try {
         if (intro.id) {
           await dispatch(
@@ -82,81 +93,105 @@ const IntroductionEditModal = props => {
               intro.id
             )
           );
+          dispatch(closeSpinner());
+          props.onClose();
         } else {
           await dispatch(
             createIntro(name, surname, location, company, title, education)
           );
+          dispatch(closeSpinner());
+          props.onClose();
         }
+      } catch (error) {
+        console.error(error);
         props.onClose();
-      } catch (err) {
-        props.onClose();
+        dispatch(closeSpinner());
       }
     },
     [dispatch, formState]
   );
 
+  const { t } = useTranslation();
+
   return (
     <React.Fragment>
       <Text margin="0 18px" fontSize="25px">
-        Intro
+        {t("intro")}
       </Text>
-      <Form>
-        <FlexContainer1 justifyContent="space-between">
+      <Form margin="0">
+        <FlexContainer flexWrap="wrap" justifyContent="space-between">
           <FormGroup>
-            <Label>Name</Label>
+            <Label>{t("name")}</Label>
             <Input
               value={name}
               name="name"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "name" && (
+              <Span color="#FF0000">{t("nameIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Surname</Label>
+            <Label>{t("surname")}</Label>
             <Input
               value={surname}
               name="surname"
               type="text"
               onChange={handleInputChange}
-            />
+            />{" "}
+            {requiredField === "surname" && (
+              <Span color="#FF0000">{t("surnameIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Title</Label>
+            <Label>{t("title")}</Label>
             <Input
               value={title}
               name="title"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "title" && (
+              <Span color="#FF0000">{t("titleIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Location</Label>
+            <Label>{t("")}</Label>
             <Input
               value={location}
               name="location"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "location" && (
+              <Span color="#FF0000">{t("locationIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup width="100%">
-            <Label>Education</Label>
+            <Label>{t("school")}</Label>
             <Input
               value={education}
               name="education"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "education" && (
+              <Span color="#FF0000">{t("schoolIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup width="100%">
-            <Label>Company</Label>
+            <Label>{t("company")}</Label>
             <Input
               value={company}
               name="company"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "company" && (
+              <Span color="#FF0000">{t("companyIsRequired")}</Span>
+            )}
           </FormGroup>
-
           <FormGroup width="30%">
             <Button
               fontSize="1.6rem"
@@ -165,7 +200,7 @@ const IntroductionEditModal = props => {
               type="submit"
               onClick={props.onClose}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </FormGroup>
           <FormGroup width="30%">
@@ -176,10 +211,10 @@ const IntroductionEditModal = props => {
               type="submit"
               onClick={handleSubmit}
             >
-              Save
+              {t("update")}
             </Button>
           </FormGroup>
-        </FlexContainer1>
+        </FlexContainer>
       </Form>
     </React.Fragment>
   );

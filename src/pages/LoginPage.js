@@ -1,9 +1,11 @@
 import React, { useState, useReducer, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import { FlexContainer } from "../components/UI/Layout";
+import { FlexContainer, Span } from "../components/UI/Layout";
 import { Form, FormGroup, Label, Input, Button } from "../components/UI/Form";
 import { login } from "../store/actions/auth";
+import { showSpinner, closeSpinner } from "../store/actions/spinner";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -36,14 +38,17 @@ const validateEmail = email => {
 };
 
 const validatePassword = password => {
-  return password && password.length > 5;
+  if (password && password.length > 5) {
+    return true;
+  }
+  return false;
 };
 
 const LoginPage = props => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const [requiredField, setRequiredField] = useState(null);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
@@ -58,6 +63,7 @@ const LoginPage = props => {
 
   const handleInputChange = useCallback(
     event => {
+      setRequiredField(null);
       const value = event.target.value;
       const input = event.target.name;
       let isValid = false;
@@ -78,47 +84,61 @@ const LoginPage = props => {
 
   const handleLogin = async event => {
     event.preventDefault();
+    for (let key in formState.inputValidities) {
+      if (!formState.inputValidities[key]) {
+        setRequiredField(key);
+        return;
+      }
+    }
     const authAction = login(
       formState.inputValues.email,
       formState.inputValues.password
     );
-    setError(null);
-    setIsLoading(true);
+    dispatch(showSpinner());
     try {
       await dispatch(authAction);
       props.history.push("/profile");
+      dispatch(closeSpinner());
     } catch (err) {
-      setError(err.message);
-      setIsLoading(false);
+      dispatch(closeSpinner());
     }
   };
 
-  if (isLoading) {
-  }
-
-  if (error) {
-  }
-
   return (
-    <FlexContainer>
+    <FlexContainer
+      height="100vh"
+      justifyContent="center"
+      background="linear-gradient(
+      90deg,
+      rgba(93, 119, 144, 1) 0%,
+      rgba(8, 138, 238, 1) 100%,
+      rgba(0, 212, 255, 1) 100%
+    )"
+    >
       <Form width="350px" border="1px solid #ddd">
         <FormGroup width="100%">
-          <Label>Email</Label>
+          <Label>{t("email")}</Label>
           <Input
             name="email"
             type="text"
             placeholder="email@example.com"
             onChange={handleInputChange}
           />
+          {requiredField === "email" && (
+            <Span color="#FF0000">{t("emailIsRequired")}</Span>
+          )}
         </FormGroup>
         <FormGroup width="100%">
-          <Label>Password</Label>
+          <Label>{t("password")}</Label>
           <Input
             name="password"
             type="password"
             placeholder="*******"
             onChange={handleInputChange}
           />
+          {requiredField === "password" && (
+            <Span color="#FF0000">{t("passwordIsRequired")}</Span>
+          )}
         </FormGroup>
         <FormGroup width="100%">
           <Button
@@ -129,7 +149,7 @@ const LoginPage = props => {
             type="submit"
             onClick={handleLogin}
           >
-            Login
+            {t("login")}
           </Button>
         </FormGroup>
       </Form>

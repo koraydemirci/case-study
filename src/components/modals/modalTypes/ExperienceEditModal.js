@@ -1,17 +1,22 @@
 import React, { useCallback, useReducer, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import { Text, FlexContainer1 } from "../../UI/Layout";
-import { Form, FormGroup, Label, Input, Button } from "../../UI/Form";
+import { Text, FlexContainer, Span } from "../../UI/Layout";
+import { Form, FormGroup, Label, Input, Button, TextArea } from "../../UI/Form";
 import { formReducer, FORM_INPUT_UPDATE } from "../../../shared/utility";
 import {
   createExperience,
   updateExperience,
   deleteExperience
 } from "../../../store/actions/profileExperience";
+import { showSpinner, closeSpinner } from "../../../store/actions/spinner";
 
 const validate = value => {
-  return value && value.length > 0;
+  if (value && value.length > 2) {
+    return true;
+  }
+  return false;
 };
 
 const ExperienceEditModal = props => {
@@ -25,6 +30,7 @@ const ExperienceEditModal = props => {
     experience = profile.experience.find(e => e.id === id);
   }
 
+  const [requiredField, setRequiredField] = useState(null);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: experience ? experience.title : "",
@@ -45,6 +51,7 @@ const ExperienceEditModal = props => {
 
   const handleInputChange = useCallback(
     event => {
+      setRequiredField(null);
       const value = event.target.value;
       const input = event.target.name;
       let isValid = validate(value);
@@ -71,10 +78,14 @@ const ExperienceEditModal = props => {
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
-
-      if (!formState.formIsValid) {
-        return;
+      for (let key in formState.inputValidities) {
+        if (!formState.inputValidities[key]) {
+          setRequiredField(key);
+          return;
+        }
       }
+      dispatch(showSpinner());
+
       try {
         if (experience && experience.id) {
           await dispatch(
@@ -88,6 +99,8 @@ const ExperienceEditModal = props => {
               experience.id
             )
           );
+          dispatch(closeSpinner());
+          props.onClose();
         } else {
           await dispatch(
             createExperience(
@@ -100,8 +113,11 @@ const ExperienceEditModal = props => {
             )
           );
         }
+        dispatch(closeSpinner());
         props.onClose();
-      } catch (err) {
+      } catch (error) {
+        console.error(error);
+        dispatch(closeSpinner());
         props.onClose();
       }
     },
@@ -109,72 +125,90 @@ const ExperienceEditModal = props => {
   );
 
   const handleDelete = async () => {
+    dispatch(showSpinner());
     try {
       await dispatch(deleteExperience(id));
+      dispatch(closeSpinner());
+      props.onClose();
     } catch (error) {
       console.error(error);
+      dispatch(closeSpinner());
+      props.onClose();
     }
-    props.onClose();
   };
+
+  const { t } = useTranslation();
+
   return (
     <React.Fragment>
       <Text margin="0 18px" fontSize="25px">
-        Experience
+        {t("experience")}
       </Text>
       <Form>
-        <FlexContainer1 justifyContent="space-between">
+        <FlexContainer flexWrap="wrap" justifyContent="space-between">
           <FormGroup>
-            <Label>Title</Label>
+            <Label>{t("title")}</Label>
             <Input
               value={title}
               name="title"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "title" && (
+              <Span color="#FF0000">{t("titleIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Location</Label>
+            <Label>{t("location")}</Label>
             <Input
               value={location}
-              name="ocation"
+              name="location"
               type="text"
               onChange={handleInputChange}
             />
           </FormGroup>
           <FormGroup width="100%">
-            <Label>Company</Label>
+            <Label>{t("company")}</Label>
             <Input
               value={company}
               name="company"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "company" && (
+              <Span color="#FF0000">{t("companyIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Start Date</Label>
+            <Label>{t("startDate")}</Label>
             <Input
               value={startDate}
               name="startDate"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "startDate" && (
+              <Span color="#FF0000">{t("startDateIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>End Date</Label>
+            <Label>{t("endDate")}</Label>
             <Input
               value={endDate}
               name="endDate"
               type="endDate"
               onChange={handleInputChange}
             />
+            {requiredField === "endDate" && (
+              <Span color="#FF0000">{t("endDateIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup width="100%">
-            <Label>Description</Label>
-            <Input
-              value={description}
+            <Label>{t("description")}</Label>
+            <TextArea
               name="description"
-              type="text"
               onChange={handleInputChange}
+              value={description}
             />
           </FormGroup>
           <FormGroup width="30%">
@@ -185,7 +219,7 @@ const ExperienceEditModal = props => {
               type="button"
               onClick={id ? handleDelete : props.onClose}
             >
-              {id ? "Delete" : "Cancel"}
+              {id ? t("delete") : t("cancel")}
             </Button>
           </FormGroup>
           <FormGroup width="30%">
@@ -196,10 +230,10 @@ const ExperienceEditModal = props => {
               type="submit"
               onClick={handleSubmit}
             >
-              {id ? "Update" : "Save"}
+              {id ? t("update") : t("save")}
             </Button>
           </FormGroup>
-        </FlexContainer1>
+        </FlexContainer>
       </Form>
     </React.Fragment>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   Card,
@@ -16,21 +17,20 @@ const ProfileSkills = props => {
   const obj = [
     {
       title: "Java",
-      detail:
-        "Endorsed by Berk Gokden and 3 others who are highly skilled at this"
+      detail: "skillsDetail"
     },
     {
       title: "C++",
-      detail:
-        "Endorsed by Berk Gokden and 3 others who are highly skilled at this"
+      detail: "skillsDetail"
     }
   ];
+  const { t } = useTranslation();
 
   return (
     <Card>
       <CardSection padding="0">
         <CardHeader margin="0" padding="24px 24px 0">
-          <CardHeaderText>Skills & Endorsements</CardHeaderText>
+          <CardHeaderText></CardHeaderText>
           {/* <Link href="#!">
             <Text
               fontWeight="600"
@@ -42,13 +42,13 @@ const ProfileSkills = props => {
             </Text>
           </Link>
           <IconButton>
-            <Icon className="fas fa-pen fa-2x" color="#0073b1"></Icon>
+            <Icon className="fas fa-pen fa-2x" ></Icon>
           </IconButton> */}
         </CardHeader>
         <CardList>
           {obj.map(o => {
             return (
-              <CardListItem column>
+              <CardListItem column key={o.title}>
                 <Text
                   fontWeight="600"
                   fontSize="1.6rem"
@@ -69,7 +69,7 @@ const ProfileSkills = props => {
                     lineHeight="1.4"
                     color="rgba(0, 0, 0, 0.6)"
                   >
-                    {o.detail}
+                    {t(o.detail)}
                   </Text>
                 </CardListItemContent>
               </CardListItem>

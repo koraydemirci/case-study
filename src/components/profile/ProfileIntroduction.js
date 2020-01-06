@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import {
   Card,
@@ -34,6 +35,8 @@ const ProfileIntroduction = props => {
     dispatch(openModal("IntroductionEditModal"));
   };
 
+  const { t } = useTranslation();
+
   return (
     <Card>
       <BackgroundImageContainer>
@@ -41,7 +44,7 @@ const ProfileIntroduction = props => {
       </BackgroundImageContainer>
       <CardHeader margin="0" padding="0 24px">
         <IconButton onClick={handleEdit}>
-          <Icon className="fas fa-pen fa-2x" color="#0073b1"></Icon>
+          <Icon className="fas fa-pen fa-2x"></Icon>
         </IconButton>
       </CardHeader>
       <Intro>
@@ -53,21 +56,17 @@ const ProfileIntroduction = props => {
           >
             {intro.name} {intro.surname}
           </ListItem>
-          <ListItem marginTop="4px" fontSize="1.8rem" lineHeight="1.33">
-            {intro.title} at {intro.company}
+          <ListItem marginTop="4px 0 0 0" fontSize="1.8rem" lineHeight="1.33">
+            {intro.title} - {intro.company}
           </ListItem>
-          <ListItem marginTop="4px" fontSize="1.6rem" lineHeight="1.5">
+          <ListItem margin="4px 0 0 0" fontSize="1.6rem" lineHeight="1.5">
             <Span>{intro.location}</Span> &#183;{" "}
             <Span>
-              <Link href="!#" color="#0073b1">
-                412 connections
-              </Link>
+              <Link href="!#">412 {t("connections")}</Link>
             </Span>{" "}
             &#183;{" "}
             <Span>
-              <Link href="!#" color="#0073b1">
-                Contact info
-              </Link>
+              <Link href="!#">{t("contact")}</Link>
             </Span>
           </ListItem>
         </List>
@@ -98,7 +97,7 @@ const ProfileIntroduction = props => {
         <Image
           width="100%"
           height="100%"
-          src="https://greenpointcapital.com/wp-content/uploads/2019/05/placeholder-profile.jpg"
+          src="https://i.pravatar.cc/150?u=asdfds"
         />
       </ProfileImageContainer>
     </Card>

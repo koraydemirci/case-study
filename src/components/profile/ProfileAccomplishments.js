@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   Card,
@@ -13,6 +14,8 @@ import { Link, Icon, Text } from "../UI/Layout";
 import { IconButton } from "../UI/Form";
 
 const ProfileAccomplishments = props => {
+  const { t } = useTranslation();
+
   return (
     <Card>
       <CardSection
@@ -20,20 +23,20 @@ const ProfileAccomplishments = props => {
         padding="0 0 24px"
       >
         <CardHeader margin="0" padding="24px 24px 0">
-          <CardHeaderText>Accomplishments</CardHeaderText>
+          <CardHeaderText>{t("accomplishments")}</CardHeaderText>
           {/* <IconButton>
-            <Icon className="fas fa-plus fa-2x" color="#0073b1"></Icon>
+            <Icon className="fas fa-plus fa-2x" ></Icon>
           </IconButton> */}
         </CardHeader>
         <CardList>
           <CardListItem>
             <CardListItemContent>
-              <Text fontSize="3.2rem" padding="0 12px 0 0" color="#0073b1">
+              <Text fontSize="3.2rem" padding="0 12px 0 0">
                 2
               </Text>
               <div>
-                <Text fontSize="1.4rem" fontWeight="600" color="#0073b1">
-                  Publications
+                <Text fontSize="1.4rem" fontWeight="600">
+                  {t("publications")}
                 </Text>
                 <Text
                   fontWeight="400"

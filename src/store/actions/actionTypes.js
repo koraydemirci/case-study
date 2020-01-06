@@ -1,4 +1,5 @@
 export const AUTHENTICATE = "AUTHENTICATE";
+export const LOGOUT = "LOGOUT";
 
 export const FETCH_PROFILE = "FETCH_PROFILE";
 export const CREATE_INTRO = "CREATE_INTRO";
@@ -12,3 +13,12 @@ export const DELETE_EXPERIENCE = "DELETE_EXPERIENCE";
 
 export const MODAL_OPEN = "MODAL_OPEN";
 export const MODAL_CLOSE = "MODAL_CLOSE";
+
+export const LIGHT_MODE = "LIGHT_MODE";
+export const DARK_MODE = "DARK_MODE";
+
+export const EN = "EN";
+export const TR = "TR";
+
+export const SHOW_SPINNER = "SHOW_SPINNER";
+export const CLOSE_SPINNER = "CLOSE_SPINNER";

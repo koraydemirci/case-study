@@ -44,10 +44,20 @@ export const fetchProfile = () => {
         });
       }
 
+      //populate interest
+      let interests = [];
+      for (let key in resData.interests) {
+        interests.push({
+          organization: resData.interests[key].organization,
+          member: resData.interests[key].member,
+          id: key
+        });
+      }
+
       if (resData) {
         dispatch({
           type: FETCH_PROFILE,
-          profile: { intro, education, experience }
+          profile: { intro, education, experience, interests }
         });
       }
     } catch (err) {

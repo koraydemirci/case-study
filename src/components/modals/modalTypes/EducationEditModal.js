@@ -1,19 +1,23 @@
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useState, useCallback, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import { Text, FlexContainer1 } from "../../UI/Layout";
-import { Form, FormGroup, Label, Input, Button } from "../../UI/Form";
+import { Text, FlexContainer, Span } from "../../UI/Layout";
+import { Form, FormGroup, Label, Input, Button, TextArea } from "../../UI/Form";
 import { formReducer, FORM_INPUT_UPDATE } from "../../../shared/utility";
 import {
   createEducation,
   updateEducation,
   deleteEducation
 } from "../../../store/actions/profileEducation";
+import { showSpinner, closeSpinner } from "../../../store/actions/spinner";
 
 const validate = value => {
-  return value && value.length > 0;
+  if (value && value.length > 2) {
+    return true;
+  }
+  return false;
 };
-
 const EducationEditModal = props => {
   const profile = useSelector(state => state.profile);
   const dispatch = useDispatch();
@@ -25,6 +29,7 @@ const EducationEditModal = props => {
     education = profile.education.find(e => e.id === id);
   }
 
+  const [requiredField, setRequiredField] = useState(null);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       school: education ? education.school : "",
@@ -45,6 +50,7 @@ const EducationEditModal = props => {
 
   const handleInputChange = useCallback(
     event => {
+      setRequiredField(null);
       const value = event.target.value;
       const input = event.target.name;
       let isValid = validate(value);
@@ -71,9 +77,14 @@ const EducationEditModal = props => {
     async event => {
       event.preventDefault();
 
-      if (!formState.formIsValid) {
-        return;
+      for (let key in formState.inputValidities) {
+        if (!formState.inputValidities[key]) {
+          setRequiredField(key);
+          return;
+        }
       }
+      dispatch(showSpinner());
+
       try {
         if (education && education.id) {
           await dispatch(
@@ -86,13 +97,19 @@ const EducationEditModal = props => {
               education.id
             )
           );
+          dispatch(closeSpinner());
+          props.onClose();
         } else {
           await dispatch(
             createEducation(school, degree, startDate, endDate, description)
           );
+          dispatch(closeSpinner());
+          props.onClose();
         }
         props.onClose();
-      } catch (err) {
+      } catch (error) {
+        console.error(error);
+        dispatch(closeSpinner());
         props.onClose();
       }
     },
@@ -100,40 +117,53 @@ const EducationEditModal = props => {
   );
 
   const handleDelete = async () => {
+    dispatch(showSpinner());
     try {
       await dispatch(deleteEducation(id));
+      dispatch(closeSpinner());
+      props.onClose();
     } catch (error) {
       console.error(error);
+      dispatch(closeSpinner());
+      props.onClose();
     }
-    props.onClose();
   };
+
+  const { t } = useTranslation();
+
   return (
     <React.Fragment>
       <Text margin="0 18px" fontSize="25px">
-        Education
+        {t("education")}
       </Text>
       <Form>
-        <FlexContainer1 justifyContent="space-between">
+        <FlexContainer flexWrap="wrap" justifyContent="space-between">
           <FormGroup>
-            <Label>School</Label>
+            <Label>{t("school")}</Label>
             <Input
               value={school}
               name="school"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "school" && (
+              <Span color="#FF0000">{t("schoolIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Degree</Label>
+            <Label>{t("degree")}</Label>
             <Input
               value={degree}
               name="degree"
               type="text"
               onChange={handleInputChange}
             />
+            {requiredField === "degree" && (
+              <Span color="#FF0000">{t("degreeIsRequired")}</Span>
+            )}
           </FormGroup>
           <FormGroup>
-            <Label>Start Date</Label>
+            <Label>{t("startDate")}</Label>
             <Input
               value={startDate}
               name="startDate"
@@ -142,7 +172,7 @@ const EducationEditModal = props => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>End Date</Label>
+            <Label>{t("endDate")}</Label>
             <Input
               value={endDate}
               name="endDate"
@@ -151,12 +181,11 @@ const EducationEditModal = props => {
             />
           </FormGroup>
           <FormGroup width="100%">
-            <Label>Description</Label>
-            <Input
-              value={description}
+            <Label>{t("description")}</Label>
+            <TextArea
               name="description"
-              type="text"
               onChange={handleInputChange}
+              value={description}
             />
           </FormGroup>
           <FormGroup width="30%">
@@ -167,7 +196,7 @@ const EducationEditModal = props => {
               type="button"
               onClick={id ? handleDelete : props.onClose}
             >
-              {id ? "Delete" : "Cancel"}
+              {id ? t("delete") : t("cancel")}
             </Button>
           </FormGroup>
           <FormGroup width="30%">
@@ -178,10 +207,10 @@ const EducationEditModal = props => {
               type="submit"
               onClick={handleSubmit}
             >
-              {id ? "Update" : "Save"}
+              {id ? t("update") : t("save")}
             </Button>
           </FormGroup>
-        </FlexContainer1>
+        </FlexContainer>
       </Form>
     </React.Fragment>
   );
