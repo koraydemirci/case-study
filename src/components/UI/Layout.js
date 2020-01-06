@@ -79,7 +79,7 @@ export const Image = styled.img.attrs(props => ({
 `;
 
 export const Icon = styled.i`
-  color: ${props => props.theme.colors.iconColor};
+  color: ${props => (props.color ? props.color : props.theme.colors.iconColor)};
 `;
 
 export const Text = styled.p`

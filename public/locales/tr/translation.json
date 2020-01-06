@@ -39,5 +39,8 @@
   "schoolIsRequired": "Okul ismi girmeniz gerekli",
   "degreeIsRequired": "Derece girmeniz gerekli.",
   "startDateIsRequired": "Başlama tarihi girrmeniz gerekli.",
-  "endDateIsRequired": "Bitirme tarihi girmeniz gerekli."
+  "endDateIsRequired": "Bitirme tarihi girmeniz gerekli.",
+  "addNewSkill": "Yeni yetenek ekle",
+  "skill": "Yetenek",
+  "skillIsRequired": "Yetenek girmeniz gerekli."
 }

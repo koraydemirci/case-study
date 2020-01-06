@@ -43,7 +43,7 @@ const ProfileParticipation = props => {
             return (
               <CardListItem key={experience.id}>
                 <CardListItemContent>
-                  <Image src="https://via.placeholder.com/48" />
+                  <Image src="https://via.placeholder.com/48/03a678" />
                   <TextContainer>
                     <Text fontWeight="600" fontSize="1.6rem" lineHeight="1.5">
                       {experience.title}

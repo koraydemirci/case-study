@@ -7,7 +7,9 @@ import {
   DELETE_EDUCATION,
   CREATE_EXPERIENCE,
   UPDATE_EXPERIENCE,
-  DELETE_EXPERIENCE
+  DELETE_EXPERIENCE,
+  CREATE_SKILL,
+  DELETE_SKILL
 } from "../actions/actionTypes";
 
 const initialState = {};
@@ -49,6 +51,11 @@ export default (state = initialState, action) => {
         e => e.id !== action.experience.id
       );
       return { ...state, experience: deletedExperience };
+    case CREATE_SKILL:
+      return { ...state, skills: [action.skill, ...state.skills] };
+    case DELETE_SKILL:
+      let deletedSkill = state.skills.filter(s => s.id !== action.skill.id);
+      return { ...state, skills: deletedSkill };
     default:
       return state;
   }

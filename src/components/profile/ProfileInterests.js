@@ -39,7 +39,7 @@ const ProfileInterests = props => {
               return (
                 <CardListItem width="50%" noBorder key={interest.id}>
                   <CardListItemContent>
-                    <Image src="https://via.placeholder.com/48" />
+                    <Image src="https://via.placeholder.com/48/3a539b" />
                     <TextContainer>
                       <Text fontWeight="600" fontSize="1.6rem" lineHeight="1.5">
                         {interest.organization}

@@ -43,7 +43,7 @@ const ProfileIntroduction = props => {
         <BackgroundImage src="https://cdn.pixabay.com/photo/2016/04/15/04/02/water-1330252_960_720.jpg" />
       </BackgroundImageContainer>
       <CardHeader margin="0" padding="0 24px">
-        <IconButton onClick={handleEdit}>
+        <IconButton margin="15px 0 0 auto" onClick={handleEdit}>
           <Icon className="fas fa-pen fa-2x"></Icon>
         </IconButton>
       </CardHeader>
@@ -73,7 +73,7 @@ const ProfileIntroduction = props => {
         <List width="232px" maxWidth="232px">
           <ListItemContainer>
             <Image
-              src="https://via.placeholder.com/24"
+              src="https://via.placeholder.com/24/2c82c9/"
               width="24px"
               height="24px"
             ></Image>
@@ -83,7 +83,7 @@ const ProfileIntroduction = props => {
           </ListItemContainer>
           <ListItemContainer>
             <Image
-              src="https://via.placeholder.com/24"
+              src="https://via.placeholder.com/24/c0392b"
               width="24px"
               height="24px"
             ></Image>

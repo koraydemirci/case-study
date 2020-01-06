@@ -17,6 +17,7 @@ export default {
     formBackgroundColor: "#1a1a1a",
     inputBackgroundColor: "#343434",
     inputColor: "#fff",
-    labelColor: "#fff"
+    labelColor: "#fff",
+    buttonBackgrounColor: "#282828"
   }
 };

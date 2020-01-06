@@ -17,6 +17,7 @@ export default {
     formBackgroundColor: "#fff",
     inputBackgroundColor: "#fafafa",
     inputColor: "rgba(0, 0, 0, 0.9)",
-    labelColor: "rgba(0, 0, 0, 0.9)"
+    labelColor: "rgba(0, 0, 0, 0.9)",
+    buttonBackgrounColor: "#fff"
   }
 };

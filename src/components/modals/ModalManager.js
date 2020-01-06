@@ -2,19 +2,23 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Modal, Backdrop } from "../UI/Layout";
-import IntroductionEditModal from "./modalTypes/IntroductionEditModal";
-import ExperienceEditModal from "./modalTypes/ExperienceEditModal";
-import EducationEditModal from "./modalTypes/EducationEditModal";
-import SkillsEditModal from "./modalTypes/SkillsEditModal";
-import AccomplishmentsEditModal from "./modalTypes/AccomplishmentsEditModal";
+import {
+  IntroductionEditModal,
+  ExperienceEditModal,
+  EducationEditModal,
+  SkillsAddModal,
+  AccomplishmentsEditModal,
+  SkillsDeleteModal
+} from "./modalTypes";
 import { closeModal } from "../../store/actions/modal";
 
 const modalLookup = {
   IntroductionEditModal,
   ExperienceEditModal,
   EducationEditModal,
-  SkillsEditModal,
-  AccomplishmentsEditModal
+  SkillsAddModal,
+  AccomplishmentsEditModal,
+  SkillsDeleteModal
 };
 
 const ModalManager = props => {

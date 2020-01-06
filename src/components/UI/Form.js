@@ -46,7 +46,10 @@ export const TextArea = styled.textarea`
 export const Button = styled.button`
   type: ${props => props.type};
   font-size: ${props => props.fontSize};
-  background: ${props => props.background};
+  background: ${props =>
+    props.background
+      ? props.background
+      : props.theme.colors.buttonBackgrounColor};
   border: ${props => (props.border ? props.border : "1px solid #ddd")};
   color: #ffffff;
   padding: ${props => props.padding || "7px"};
@@ -60,9 +63,9 @@ export const Button = styled.button`
 `;
 
 export const IconButton = styled.button`
-  margin: 10px 0 0 auto;
-  height: 40px;
-  width: 40px;
+  margin: ${props => (props.margin ? props.margin : "0 0 0 auto")};
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   border: none;
   :focus {

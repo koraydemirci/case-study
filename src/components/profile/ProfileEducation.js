@@ -17,9 +17,11 @@ import { openModal } from "../../store/actions/modal";
 
 const ProfileEducation = props => {
   const dispatch = useDispatch();
+
   const handleEdit = id => {
     dispatch(openModal("EducationEditModal", { id }));
   };
+
   const profile = useSelector(state => state.profile);
 
   let educationHistory;
@@ -43,7 +45,7 @@ const ProfileEducation = props => {
             return (
               <CardListItem key={education.id}>
                 <CardListItemContent>
-                  <Image src="https://via.placeholder.com/48" />
+                  <Image src="https://via.placeholder.com/48/cf000f" />
                   <TextContainer>
                     <Text fontWeight="600" fontSize="1.6rem" lineHeight="1.5">
                       {education.school}

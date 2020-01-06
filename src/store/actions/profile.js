@@ -54,10 +54,19 @@ export const fetchProfile = () => {
         });
       }
 
+      //populate skills
+      let skills = [];
+      for (let key in resData.skills) {
+        skills.push({
+          skill: resData.skills[key].skill,
+          id: key
+        });
+      }
+
       if (resData) {
         dispatch({
           type: FETCH_PROFILE,
-          profile: { intro, education, experience, interests }
+          profile: { intro, education, experience, interests, skills }
         });
       }
     } catch (err) {
