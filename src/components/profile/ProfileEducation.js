@@ -87,8 +87,6 @@ const ProfileEducation = props => {
       )}
     </CardSection>
   );
-
-  return null;
 };
 
 export default ProfileEducation;

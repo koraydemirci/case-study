@@ -14,6 +14,7 @@ if (process.env.NODE_ENV === "development") {
 } else {
   composeEnhancers = compose;
 }
+
 export const configureStore = () => {
   const rootReducer = combineReducers({
     profile: profileReducer,

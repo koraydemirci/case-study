@@ -38,7 +38,7 @@ export const createIntro = (
           company,
           title,
           education,
-          id: Object.keys(resData)[0]
+          id: Object.values(resData)[0]
         }
       });
     }

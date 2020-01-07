@@ -7,7 +7,6 @@ import {
   ExperienceEditModal,
   EducationEditModal,
   SkillsAddModal,
-  AccomplishmentsEditModal,
   SkillsDeleteModal
 } from "./modalTypes";
 import { closeModal } from "../../store/actions/modal";
@@ -17,7 +16,6 @@ const modalLookup = {
   ExperienceEditModal,
   EducationEditModal,
   SkillsAddModal,
-  AccomplishmentsEditModal,
   SkillsDeleteModal
 };
 

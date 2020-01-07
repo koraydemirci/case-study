@@ -17,10 +17,11 @@ import { openModal } from "../../store/actions/modal";
 
 const ProfileParticipation = props => {
   const dispatch = useDispatch();
+  const profile = useSelector(state => state.profile);
+
   const handleEdit = id => {
     dispatch(openModal("ExperienceEditModal", { id }));
   };
-  const profile = useSelector(state => state.profile);
 
   let experienceHistory;
   if (profile) {

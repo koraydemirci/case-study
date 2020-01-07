@@ -43,5 +43,6 @@
   "endDateIsRequired": "End date is required.",
   "addNewSkill": "Add a new skill",
   "skill": "Skill",
-  "skillIsRequired": "Skill is required."
+  "skillIsRequired": "Skill is required.",
+  "location": "Location"
 }

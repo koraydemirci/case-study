@@ -66,7 +66,13 @@ export const fetchProfile = () => {
       if (resData) {
         dispatch({
           type: FETCH_PROFILE,
-          profile: { intro, education, experience, interests, skills }
+          profile: {
+            intro,
+            education: education.reverse(),
+            experience: experience.reverse(),
+            interests,
+            skills: skills.reverse()
+          }
         });
       }
     } catch (err) {

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ const Navbar = props => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(changeToLightMode());
     props.history.push("/login");
   };
 

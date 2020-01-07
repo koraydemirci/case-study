@@ -70,46 +70,43 @@ const IntroductionEditModal = props => {
     education
   } = formState.inputValues;
 
-  const handleSubmit = useCallback(
-    async event => {
-      event.preventDefault();
-      for (let key in formState.inputValidities) {
-        if (!formState.inputValidities[key]) {
-          setRequiredField(key);
-          return;
-        }
+  const handleSubmit = async event => {
+    event.preventDefault();
+    for (let key in formState.inputValidities) {
+      if (!formState.inputValidities[key]) {
+        setRequiredField(key);
+        return;
       }
-      dispatch(showSpinner());
-      try {
-        if (intro.id) {
-          await dispatch(
-            updateIntro(
-              name,
-              surname,
-              location,
-              company,
-              title,
-              education,
-              intro.id
-            )
-          );
-          dispatch(closeSpinner());
-          props.onClose();
-        } else {
-          await dispatch(
-            createIntro(name, surname, location, company, title, education)
-          );
-          dispatch(closeSpinner());
-          props.onClose();
-        }
-      } catch (error) {
-        console.error(error);
-        props.onClose();
+    }
+    dispatch(showSpinner());
+    try {
+      if (intro.id) {
+        await dispatch(
+          updateIntro(
+            name,
+            surname,
+            location,
+            company,
+            title,
+            education,
+            intro.id
+          )
+        );
         dispatch(closeSpinner());
+        props.onClose();
+      } else {
+        await dispatch(
+          createIntro(name, surname, location, company, title, education)
+        );
+        dispatch(closeSpinner());
+        props.onClose();
       }
-    },
-    [dispatch, formState]
-  );
+    } catch (error) {
+      console.error(error);
+      props.onClose();
+      dispatch(closeSpinner());
+    }
+  };
 
   const { t } = useTranslation();
 

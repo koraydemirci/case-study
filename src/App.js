@@ -18,6 +18,7 @@ import "./App.css";
 const App = props => {
   const dispatch = useDispatch();
   const isDarkMode = useSelector(state => state.isDarkMode);
+
   useEffect(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) {

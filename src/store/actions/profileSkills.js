@@ -21,7 +21,7 @@ export const createSkill = skill => {
         type: CREATE_SKILL,
         skill: {
           skill,
-          id: Object.keys(resData)[0]
+          id: Object.values(resData)[0]
         }
       });
     }
@@ -29,6 +29,7 @@ export const createSkill = skill => {
 };
 
 export const deleteSkill = id => {
+  console.log("TCL: id", id);
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const response = await fetch(

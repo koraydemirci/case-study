@@ -1,15 +1,15 @@
-import React, { useState, useCallback, useReducer } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { Text, FlexContainer, Icon } from "../../UI/Layout";
-import { Form, FormGroup, Label, Input, Button } from "../../UI/Form";
+import { FormGroup, Button } from "../../UI/Form";
 
 import { IconButton } from "../../UI/Form";
 import { deleteSkill } from "../../../store/actions/profileSkills";
 import { showSpinner, closeSpinner } from "../../../store/actions/spinner";
 
-const SkillsDeleteModal = props => {
+const SkillsDeleteModal = ({ onClose }) => {
   const dispatch = useDispatch();
 
   const profile = useSelector(state => state.profile);
@@ -27,7 +27,7 @@ const SkillsDeleteModal = props => {
     } catch (error) {
       console.error(error);
       dispatch(closeSpinner());
-      props.onClose();
+      onClose();
     }
   };
 
@@ -51,7 +51,10 @@ const SkillsDeleteModal = props => {
             </Text>
             <IconButton
               margin="0 40px 0 auto"
-              onClick={() => handleDelete(skill.id)}
+              onClick={() => {
+                console.log("iddd", skill);
+                handleDelete(skill.id);
+              }}
             >
               <Icon color="#990000" className="fas fa-trash fa-2x"></Icon>
             </IconButton>
@@ -65,7 +68,7 @@ const SkillsDeleteModal = props => {
             background="#e74c3c"
             width="100%"
             type="button"
-            onClick={props.onClose}
+            onClick={onClose}
           >
             {t("cancel")}
           </Button>

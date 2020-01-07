@@ -42,7 +42,7 @@ export const createExperience = (
           endDate,
           description,
           location,
-          id: Object.keys(resData)[0]
+          id: Object.values(resData)[0]
         }
       });
     }

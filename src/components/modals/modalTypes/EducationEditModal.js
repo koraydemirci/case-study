@@ -18,11 +18,10 @@ const validate = value => {
   }
   return false;
 };
-const EducationEditModal = props => {
+
+const EducationEditModal = ({ id, onClose }) => {
   const profile = useSelector(state => state.profile);
   const dispatch = useDispatch();
-
-  const { id } = props;
 
   let education;
   if (profile && profile.education && id) {
@@ -40,10 +39,7 @@ const EducationEditModal = props => {
     },
     inputValidities: {
       school: education ? true : false,
-      degree: education ? true : false,
-      startDate: education ? true : false,
-      endDate: education ? true : false,
-      description: education ? true : false
+      degree: education ? true : false
     },
     formIsValid: education ? true : false
   });
@@ -73,59 +69,54 @@ const EducationEditModal = props => {
     description
   } = formState.inputValues;
 
-  const handleSubmit = useCallback(
-    async event => {
-      event.preventDefault();
-
-      for (let key in formState.inputValidities) {
-        if (!formState.inputValidities[key]) {
-          setRequiredField(key);
-          return;
-        }
+  const handleSubmit = async event => {
+    event.preventDefault();
+    for (let key in formState.inputValidities) {
+      if (!formState.inputValidities[key]) {
+        setRequiredField(key);
+        return;
       }
-      dispatch(showSpinner());
-
-      try {
-        if (education && education.id) {
-          await dispatch(
-            updateEducation(
-              school,
-              degree,
-              startDate,
-              endDate,
-              description,
-              education.id
-            )
-          );
-          dispatch(closeSpinner());
-          props.onClose();
-        } else {
-          await dispatch(
-            createEducation(school, degree, startDate, endDate, description)
-          );
-          dispatch(closeSpinner());
-          props.onClose();
-        }
-        props.onClose();
-      } catch (error) {
-        console.error(error);
+    }
+    dispatch(showSpinner());
+    try {
+      if (education && education.id) {
+        await dispatch(
+          updateEducation(
+            school,
+            degree,
+            startDate,
+            endDate,
+            description,
+            education.id
+          )
+        );
         dispatch(closeSpinner());
-        props.onClose();
+        onClose();
+      } else {
+        await dispatch(
+          createEducation(school, degree, startDate, endDate, description)
+        );
+        dispatch(closeSpinner());
+        onClose();
       }
-    },
-    [dispatch, formState]
-  );
+      onClose();
+    } catch (error) {
+      console.error(error);
+      dispatch(closeSpinner());
+      onClose();
+    }
+  };
 
   const handleDelete = async () => {
     dispatch(showSpinner());
     try {
       await dispatch(deleteEducation(id));
       dispatch(closeSpinner());
-      props.onClose();
+      onClose();
     } catch (error) {
       console.error(error);
       dispatch(closeSpinner());
-      props.onClose();
+      onClose();
     }
   };
 
@@ -194,7 +185,7 @@ const EducationEditModal = props => {
               background="#e74c3c"
               width="100%"
               type="button"
-              onClick={id ? handleDelete : props.onClose}
+              onClick={id ? handleDelete : onClose}
             >
               {id ? t("delete") : t("cancel")}
             </Button>

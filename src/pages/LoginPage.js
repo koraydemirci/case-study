@@ -6,31 +6,7 @@ import { FlexContainer, Span } from "../components/UI/Layout";
 import { Form, FormGroup, Label, Input, Button } from "../components/UI/Form";
 import { login } from "../store/actions/auth";
 import { showSpinner, closeSpinner } from "../store/actions/spinner";
-
-const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
-
-const formReducer = (state, action) => {
-  if (action.type === FORM_INPUT_UPDATE) {
-    const updatedValues = {
-      ...state.inputValues,
-      [action.input]: action.value
-    };
-    const updatedValidities = {
-      ...state.inputValidities,
-      [action.input]: action.isValid
-    };
-    let updatedFormIsValid = true;
-    for (const key in updatedValidities) {
-      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
-    }
-    return {
-      formIsValid: updatedFormIsValid,
-      inputValidities: updatedValidities,
-      inputValues: updatedValues
-    };
-  }
-  return state;
-};
+import { formReducer, FORM_INPUT_UPDATE } from "../shared/utility";
 
 const validateEmail = email => {
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -45,7 +21,6 @@ const validatePassword = password => {
 };
 
 const LoginPage = props => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [requiredField, setRequiredField] = useState(null);
@@ -61,26 +36,23 @@ const LoginPage = props => {
     formIsValid: false
   });
 
-  const handleInputChange = useCallback(
-    event => {
-      setRequiredField(null);
-      const value = event.target.value;
-      const input = event.target.name;
-      let isValid = false;
-      if (input === "email") {
-        isValid = validateEmail(value);
-      } else if (input === "password") {
-        isValid = validatePassword(value);
-      }
-      dispatchFormState({
-        type: FORM_INPUT_UPDATE,
-        value,
-        isValid,
-        input
-      });
-    },
-    [dispatchFormState]
-  );
+  const handleInputChange = event => {
+    setRequiredField(null);
+    const value = event.target.value;
+    const input = event.target.name;
+    let isValid = false;
+    if (input === "email") {
+      isValid = validateEmail(value);
+    } else if (input === "password") {
+      isValid = validatePassword(value);
+    }
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value,
+      isValid,
+      input
+    });
+  };
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -103,6 +75,8 @@ const LoginPage = props => {
       dispatch(closeSpinner());
     }
   };
+
+  const { t } = useTranslation();
 
   return (
     <FlexContainer

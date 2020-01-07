@@ -39,7 +39,7 @@ export const createEducation = (
           startDate,
           endDate,
           description,
-          id: Object.keys(resData)[0]
+          id: Object.values(resData)[0]
         }
       });
     }

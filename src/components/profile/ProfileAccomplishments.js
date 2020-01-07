@@ -10,8 +10,7 @@ import {
   CardListItem,
   CardListItemContent
 } from "../UI/Profile";
-import { Link, Icon, Text } from "../UI/Layout";
-import { IconButton } from "../UI/Form";
+import { Text } from "../UI/Layout";
 
 const ProfileAccomplishments = props => {
   const { t } = useTranslation();
@@ -24,9 +23,6 @@ const ProfileAccomplishments = props => {
       >
         <CardHeader margin="0" padding="24px 24px 0">
           <CardHeaderText>{t("accomplishments")}</CardHeaderText>
-          {/* <IconButton>
-            <Icon className="fas fa-plus fa-2x" ></Icon>
-          </IconButton> */}
         </CardHeader>
         <CardList>
           <CardListItem>

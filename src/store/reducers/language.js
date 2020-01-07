@@ -1,10 +1,6 @@
 import { EN, TR } from "../actions/actionTypes";
 
-let initialState = "en";
-const language = localStorage.getItem("language");
-if (language) {
-  initialState = language;
-}
+let initialState = "";
 
 export default (state = initialState, action) => {
   switch (action.type) {

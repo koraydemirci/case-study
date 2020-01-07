@@ -42,5 +42,6 @@
   "endDateIsRequired": "Bitirme tarihi girmeniz gerekli.",
   "addNewSkill": "Yeni yetenek ekle",
   "skill": "Yetenek",
-  "skillIsRequired": "Yetenek girmeniz gerekli."
+  "skillIsRequired": "Yetenek girmeniz gerekli.",
+  "location": "Yer"
 }
